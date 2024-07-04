@@ -1,26 +1,31 @@
-import {Await, NavLink} from '@remix-run/react';
-import {Suspense} from 'react';
-import type {HeaderQuery} from 'storefrontapi.generated';
-import type {LayoutProps} from './Layout';
-import {useRootLoaderData} from '~/root';
+import { Await, NavLink, Link } from '@remix-run/react';
+import { Suspense } from 'react';
+import type { HeaderQuery } from 'storefrontapi.generated';
+import type { LayoutProps } from './Layout';
+import { useRootLoaderData } from '~/root';
+
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({header, isLoggedIn, cart}: HeaderProps) {
-  const {shop, menu} = header;
+export function Header({ header, isLoggedIn, cart }: HeaderProps) {
+  const { shop, menu } = header;
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <strong>{shop.name}</strong>
       </NavLink>
+
+
+
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
       />
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+
     </header>
   );
 }
@@ -34,7 +39,7 @@ export function HeaderMenu({
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
   viewport: Viewport;
 }) {
-  const {publicStoreDomain} = useRootLoaderData();
+  const { publicStoreDomain } = useRootLoaderData();
   const className = `header-menu-${viewport}`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -63,22 +68,30 @@ export function HeaderMenu({
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
         return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={closeAside}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
+          <>
+            <NavLink
+              className="header-menu-item"
+              end
+              key={item.id}
+              onClick={closeAside}
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+            >
+              {item.title}
+
+            </NavLink>
+            <Link to={`/blogs/news`}>Preguntas Frecuentes</Link>
+          </>
+
+
+
+
         );
       })}
     </nav>
@@ -113,11 +126,11 @@ function SearchToggle() {
   return <a href="#search-aside">Search</a>;
 }
 
-function CartBadge({count}: {count: number}) {
+function CartBadge({ count }: { count: number }) {
   return <a href="#cart-aside">Cart {count}</a>;
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
