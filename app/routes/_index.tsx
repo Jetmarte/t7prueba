@@ -26,9 +26,7 @@ export default function Homepage() {
     <div className="home">
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
-      <h2>
-        <Link to={`/blogs/news`}>Preguntas Frecuentes</Link>
-      </h2>
+      
     </div>
   );
 }

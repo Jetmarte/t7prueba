@@ -16,14 +16,15 @@ export function Header({ header, isLoggedIn, cart }: HeaderProps) {
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <strong>{shop.name}</strong>
       </NavLink>
-
-
-
+      
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
       />
+      <div className='blogLink'><Link to={`/blogs/news`}> Preguntas</Link></div>
+      <div className='blogLink'><Link to={`/collections`}> Colecciones</Link></div>
+      
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
 
     </header>
@@ -86,7 +87,7 @@ export function HeaderMenu({
               {item.title}
 
             </NavLink>
-            <Link to={`/blogs/news`}>Preguntas Frecuentes</Link>
+            
           </>
 
 
